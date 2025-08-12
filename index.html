@@ -1,270 +1,170 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Maschinen‑Check</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Maschinen Check V2</title>
 <style>
-  :root{
-    --bg:#0f1115; --panel:#151923; --text:#ffffff; --muted:#9aa1b3;
-    --green:#15803d; --blue:#1e3a8a; --orange:#f97316; --red:#b91c1c;
-    --btn:#19c37d; --btn2:#4b5563; --border:#232838;
-  }
-  *{box-sizing:border-box}
-  body{margin:0;background:var(--bg);color:var(--text);font:14px/1.45 -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Arial}
-  header{background:#151923;border-bottom:1px solid var(--border);padding:12px;position:sticky;top:0;z-index:10}
-  h1{margin:0 0 4px 0;font-size:18px}
-  .total{color:var(--muted);font-size:13px}
-  main{padding:12px;max-width:820px;margin:0 auto}
-
-  .btn{width:100%;padding:10px;border:none;border-radius:8px;background:var(--btn);color:white;font-weight:600;cursor:pointer}
-  .list{margin-top:10px}
-  .task{padding:12px;border-radius:10px;margin-bottom:10px;border:1px solid var(--border)}
-  .task.red{background:var(--red)}
-  .task.orange{background:var(--orange)}
-  .task.blue{background:var(--blue)}
-  .task.green{background:var(--green)}
-  .row{display:flex;justify-content:space-between;gap:8px;align-items:center;flex-wrap:wrap}
-  .note{color:#eef;opacity:.9}
-  .pill{padding:4px 10px;border-radius:999px;background:rgba(0,0,0,.25);font-variant-numeric:tabular-nums;font-weight:700}
-  .small{font-size:12px;color:#e8e8e8;opacity:.85}
-  .tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
-  .tag{background:rgba(0,0,0,.25);padding:2px 8px;border-radius:999px;font-size:12px}
-  .actions{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
-  .btn2{background:var(--btn2);color:white;border:none;border-radius:6px;padding:6px 10px;cursor:pointer;font-size:12px}
-  .danger{background:#7f1d1d}
-
-  /* Nur Texteingaben vollbreit – Checkboxen ausnehmen */
-  input:not([type="checkbox"]){
-    width:100%;padding:8px;border-radius:8px;border:1px solid var(--border);
-    background:#0e1420;color:#e9ecf1
-  }
-
-  dialog{border:none;border-radius:12px;padding:0;max-width:560px;width:92%}
-  .dlg{padding:14px;background:#151923;color:#fff;border:1px solid var(--border);border-radius:12px}
-  .dlg h3{margin:0 0 8px 0}
-  .grid{display:grid;grid-template-columns:1fr;gap:10px}
-  @media(min-width:620px){ .grid{grid-template-columns:1fr 1fr} }
-
-  .checks{display:flex;gap:8px;flex-wrap:wrap}
-  .checks label{
-    display:flex;align-items:center;gap:8px;
-    font-size:12px;padding:6px 10px;border-radius:999px;
-    border:1px solid var(--border); background:#0e1420; color:#e9ecf1
-  }
-  .checks input[type="checkbox"]{
-    width:auto;height:auto;margin:0;transform:scale(1.2);accent-color:#19c37d;
-  }
-
-  .calcRow{display:flex;justify-content:space-between;align-items:center;color:var(--muted);font-size:12px;margin-top:4px}
+    body { font-family: Arial, sans-serif; margin: 0; padding: 0; background: #f4f4f4; }
+    header { background: #333; color: white; padding: 10px; text-align: center; }
+    .container { padding: 15px; }
+    button { padding: 8px 12px; margin: 5px; cursor: pointer; border: none; border-radius: 4px; }
+    .blue { background: #3498db; color: white; }
+    .orange { background: #f39c12; color: white; }
+    .red { background: #e74c3c; color: white; }
+    .green { background: #2ecc71; color: white; }
+    .machine { padding: 10px; margin-bottom: 10px; background: white; border-radius: 5px; display: flex; justify-content: space-between; align-items: center; }
+    .pause-info { margin-top: 10px; padding: 10px; background: #ddd; border-radius: 5px; }
+    .stopwatch { margin-top: 15px; padding: 10px; background: #ccc; border-radius: 5px; }
 </style>
 </head>
 <body>
+
 <header>
-  <h1>Maschinen‑Check</h1>
-  <div class="total" id="totalTime">Gesamtzeit: 0 Min (offen)</div>
+    <h2 id="shiftName">Schicht: wird erkannt...</h2>
 </header>
 
-<main>
-  <button class="btn" id="addBtn">+ Maschine hinzufügen</button>
-  <div class="list" id="taskList"></div>
-</main>
+<div class="container">
+    <button class="blue" onclick="addMachine()">+ Maschine hinzufügen</button>
+    <div id="machines"></div>
 
-<!-- Dialog -->
-<dialog id="taskDlg">
-  <div class="dlg">
-    <h3 id="dlgTitle">Maschine hinzufügen</h3>
-    <div class="grid">
-      <div>
-        <label class="small">Maschinen‑Nr.</label>
-        <input id="f_nr" type="text" placeholder="z. B. 7">
-      </div>
+    <div class="pause-info" id="pauseInfo">Pause-Info wird berechnet...</div>
 
-      <div>
-        <label class="small">Restzeit (Std:Min) – max 08:30</label>
-        <input id="f_timer" type="time" step="60" value="00:30">
-      </div>
-
-      <div style="grid-column:1 / -1">
-        <label class="small">Aufgaben (ankreuzen → Arbeitszeit wird addiert)</label>
-        <div class="checks" id="checks">
-          <label><input type="checkbox" class="f_tag" value="Fachung" data-min="10"> Fachung (10)</label>
-          <label><input type="checkbox" class="f_tag" value="Folie" data-min="3"> Folie (3)</label>
-          <label><input type="checkbox" class="f_tag" value="Einbau" data-min="5"> Einbau (5)</label>
-          <label><input type="checkbox" class="f_tag" value="Ausbau" data-min="4"> Ausbau (4)</label>
-          <label><input type="checkbox" class="f_tag" value="Maschinen putzen" data-min="15"> Maschinen putzen (15)</label>
-        </div>
-        <div class="calcRow">
-          <span>Berechnete Arbeitszeit (aus Kästchen) + Zusatz:</span>
-          <strong id="calcDur">0 Min</strong>
-        </div>
-      </div>
-
-      <div>
-        <label class="small">Zusatz‑Minuten (optional)</label>
-        <input id="f_extra" type="number" min="0" step="1" value="0">
-      </div>
-
-      <div>
-        <label class="small">Notiz</label>
-        <input id="f_note" type="text" placeholder="z. B. Rohr A zuerst">
-      </div>
+    <div class="stopwatch">
+        <h3>Fachung-Wechsel Zeit messen</h3>
+        <div id="stopwatchTime">00:00</div>
+        <button class="blue" onclick="startStopwatch()">Start</button>
+        <button class="orange" onclick="stopStopwatch()">Stop</button>
+        <button class="red" onclick="resetStopwatch()">Reset</button>
+        <div id="lastTime"></div>
+        <div id="averageTime"></div>
     </div>
-
-    <div class="actions" style="margin-top:6px">
-      <button class="btn2" id="cancelBtn">Abbrechen</button>
-      <button class="btn2" id="saveBtn">Speichern</button>
-    </div>
-  </div>
-</dialog>
+</div>
 
 <script>
-const ORANGE_THRESHOLD_MIN = 45;
-const MAX_TIMER_MIN = 8*60 + 30;
-const KEY = "maschinenCheck_singlefile_v1";
-let tasks = JSON.parse(localStorage.getItem(KEY) || "[]");
+let machines = JSON.parse(localStorage.getItem("machines")) || [];
+let stopwatchInterval, stopwatchSeconds = 0, times = [];
 
-const $ = s => document.querySelector(s);
-const $$ = (s,root=document) => Array.from(root.querySelectorAll(s));
-function save(){ localStorage.setItem(KEY, JSON.stringify(tasks)); }
-function fmtCountdown(ms){
-  if (ms <= 0) return "00:00";
-  const totalMin = Math.floor(ms/60000);
-  const h = Math.floor(totalMin/60);
-  const m = totalMin%60;
-  return (h>0 ? `${h}:` : "") + String(m).padStart(2,"0");
-}
-function escapeHtml(s){ return String(s).replace(/[&<>"']/g, m=>({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;" }[m])); }
-function clamp(v,min,max){ return Math.max(min, Math.min(max, v)); }
-function timeToMinutes(val){
-  if(!val || !val.includes(":")) return 0;
-  const [h,m] = val.split(":").map(n=>parseInt(n,10));
-  if(Number.isNaN(h)||Number.isNaN(m)) return 0;
-  return clamp(h*60+m, 0, MAX_TIMER_MIN);
+function detectShift() {
+    let now = new Date();
+    let h = now.getHours(), m = now.getMinutes();
+    let current = h * 60 + m;
+    let shift = "";
+    if (current >= 330 && current < 810) shift = "Frühschicht (05:30 - 13:30)";
+    else if (current >= 810 && current < 1290) shift = "Spätschicht (13:30 - 21:30)";
+    else shift = "Nachtschicht (21:30 - 05:30)";
+    document.getElementById("shiftName").innerText = "Schicht: " + shift;
 }
 
-function statusFor(t){
-  if (t.done) return "green";
-  const left = t.due - Date.now();
-  if (left <= 0) return "red";
-  if (left <= ORANGE_THRESHOLD_MIN*60000) return "orange";
-  return "blue";
-}
-function sortTasks(a,b){
-  const now = Date.now();
-  const aOver = (!a.done && a.due <= now), bOver = (!b.done && b.due <= now);
-  if (aOver && !bOver) return -1;
-  if (!aOver && bOver) return 1;
-  if (!a.done && b.done) return -1;
-  if (a.done && !b.done) return 1;
-  const aLeft = Math.max(0, a.due - now);
-  const bLeft = Math.max(0, b.due - now);
-  return aLeft - bLeft;
+function addMachine() {
+    let name = prompt("Maschinen-Nummer / Name:");
+    let minutes = parseInt(prompt("Zeit bis fällig (in Minuten):"));
+    if (!name || isNaN(minutes)) return;
+    let due = Date.now() + minutes * 60000;
+    machines.push({ name, due, done: false });
+    saveMachines();
+    renderMachines();
 }
 
-function render(){
-  const list = tasks.slice().sort(sortTasks);
-  const total = list.filter(t=>!t.done).reduce((s,t)=> s + (parseInt(t.duration,10)||0), 0);
-  $("#totalTime").textContent = `Gesamtzeit: ${total} Min (offen)`;
-
-  const box = $("#taskList");
-  box.innerHTML = "";
-  list.forEach(t=>{
-    const msLeft = t.due - Date.now();
-    const status = statusFor(t);
-    const tags = (t.tags||[]).map(x=>`<span class="tag">${escapeHtml(x)}</span>`).join("");
-
-    const div = document.createElement("div");
-    div.className = `task ${status}`;
-    div.innerHTML = `
-      <div class="row">
-        <strong>Maschine ${escapeHtml(t.nr)}</strong>
-        <span class="pill">${fmtCountdown(msLeft)}</span>
-      </div>
-      <div class="tags">${tags}</div>
-      <div class="row" style="margin-top:6px">
-        <span class="note">${escapeHtml(t.note||"")}</span>
-        <span class="small">Arbeitszeit: ${t.duration||0} Min</span>
-      </div>
-      <div class="actions">
-        <button class="btn2" onclick="toggleDone(${t.id})">${t.done ? "Wieder offen" : "Erledigt"}</button>
-        <button class="btn2" onclick="editTask(${t.id})">Bearbeiten</button>
-        <button class="btn2 danger" onclick="deleteTask(${t.id})">Löschen</button>
-      </div>
-    `;
-    box.appendChild(div);
-  });
+function toggleDone(index) {
+    machines[index].done = !machines[index].done;
+    saveMachines();
+    renderMachines();
 }
 
-function addTask(){ openDialog(); }
-function editTask(id){
-  const t = tasks.find(x=>x.id===id); if(!t) return;
-  openDialog(t);
-}
-function deleteTask(id){
-  if(!confirm("Eintrag löschen?")) return;
-  tasks = tasks.filter(t=>t.id!==id); save(); render();
-}
-function toggleDone(id){
-  const t = tasks.find(x=>x.id===id); if(!t) return;
-  t.done = !t.done; save(); render();
+function saveMachines() {
+    localStorage.setItem("machines", JSON.stringify(machines));
 }
 
-const dlg = $("#taskDlg");
-$("#addBtn").addEventListener("click", addTask);
-$("#cancelBtn").addEventListener("click", ()=> dlg.close());
-$("#saveBtn").addEventListener("click", saveFromDialog);
+function renderMachines() {
+    let container = document.getElementById("machines");
+    container.innerHTML = "";
+    let now = Date.now();
 
-function updateCalcDur(){
-  const base = $$(".f_tag:checked").reduce((s,el)=> s + (parseInt(el.dataset.min,10)||0), 0);
-  const extra = parseInt($("#f_extra").value,10) || 0;
-  $("#calcDur").textContent = `${base + extra} Min`;
-}
-document.addEventListener("change", e=>{
-  if(e.target.matches(".f_tag")) updateCalcDur();
-});
-$("#f_extra").addEventListener("input", updateCalcDur);
+    machines.sort((a, b) => a.due - b.due);
 
-let editId = null;
-function openDialog(t=null){
-  editId = t?.id ?? null;
-  $("#dlgTitle").textContent = t ? "Maschine bearbeiten" : "Maschine hinzufügen";
-  $("#f_nr").value   = t?.nr   ?? "";
-  $("#f_note").value = t?.note ?? "";
-  $("#f_extra").value = 0;
-  $$(".f_tag").forEach(cb=> cb.checked = !!(t?.tags||[]).includes(cb.value));
-  if(t){
-    const leftMin = Math.max(0, Math.floor((t.due - Date.now())/60000));
-    const h = Math.floor(leftMin/60), m = leftMin%60;
-    $("#f_timer").value = `${String(h).padStart(2,"0")}:${String(m).padStart(2,"0")}`;
-  } else {
-    $("#f_timer").value = "00:30";
-  }
-  updateCalcDur();
-  dlg.showModal();
+    machines.forEach((m, i) => {
+        let remaining = Math.max(0, Math.floor((m.due - now) / 1000));
+        let mins = Math.floor(remaining / 60);
+        let secs = remaining % 60;
+        let color = m.done ? "green" : mins <= 0 ? "red" : mins <= 45 ? "orange" : "blue";
+
+        let div = document.createElement("div");
+        div.className = "machine " + color;
+        div.innerHTML = `
+            <strong>${m.name}</strong> - ${String(mins).padStart(2,'0')}:${String(secs).padStart(2,'0')}
+            <button onclick="toggleDone(${i})">${m.done ? 'Rückgängig' : 'Erledigt'}</button>
+        `;
+        container.appendChild(div);
+    });
+
+    updatePauseInfo();
 }
 
-function saveFromDialog(){
-  const nr   = $("#f_nr").value.trim();
-  const note = $("#f_note").value.trim();
-  const timerMin = timeToMinutes($("#f_timer").value);
-  const tagMins  = $$(".f_tag:checked").reduce((s,el)=> s + (parseInt(el.dataset.min,10)||0), 0);
-  const extra    = parseInt($("#f_extra").value,10) || 0;
-  const duration = tagMins + extra;
-  const tags     = $$(".f_tag:checked").map(el=>el.value);
-  if(!nr){ alert("Bitte Maschinen‑Nr. angeben."); return; }
-  const due = Date.now() + timerMin*60000;
-  if(editId){
-    const t = tasks.find(x=>x.id===editId);
-    if(t){ t.nr = nr; t.note = note; t.duration = duration; t.due = due; t.tags = tags; }
-  } else {
-    tasks.push({ id: Date.now(), nr, note, duration, due, done:false, tags });
-  }
-  save(); render(); dlg.close();
+function updatePauseInfo() {
+    let now = Date.now();
+    let nextDue = Math.min(...machines.filter(m => !m.done).map(m => m.due));
+    let freeMins = isFinite(nextDue) ? Math.floor((nextDue - now) / 60000) : 0;
+    let pauseMsg = "";
+
+    let shiftStart = new Date();
+    shiftStart.setMinutes(0); shiftStart.setSeconds(0);
+    let h = new Date().getHours();
+    if (h >= 5 && h < 13) shiftStart.setHours(5,30);
+    else if (h >= 13 && h < 21) shiftStart.setHours(13,30);
+    else if (h >= 21 || h < 5) {
+        if (h < 5) shiftStart.setDate(shiftStart.getDate() - 1);
+        shiftStart.setHours(21,30);
+    }
+    let elapsedMins = Math.floor((now - shiftStart.getTime()) / 60000);
+    let minsToNextCheck = 120 - (elapsedMins % 120);
+    if (minsToNextCheck === 120) minsToNextCheck = 0;
+
+    if (minsToNextCheck > 0 && minsToNextCheck < freeMins) {
+        pauseMsg = `Pause möglich für ${freeMins - 10} Min (Sichtprüfung in ${minsToNextCheck} Min)`;
+    } else {
+        pauseMsg = `Pause möglich für ${freeMins} Min`;
+    }
+
+    document.getElementById("pauseInfo").innerText = pauseMsg;
 }
 
-render();
-setInterval(render, 1000);
+function startStopwatch() {
+    clearInterval(stopwatchInterval);
+    stopwatchInterval = setInterval(() => {
+        stopwatchSeconds++;
+        updateStopwatchDisplay();
+    }, 1000);
+}
+
+function stopStopwatch() {
+    clearInterval(stopwatchInterval);
+    times.push(stopwatchSeconds);
+    let avg = Math.floor(times.reduce((a,b)=>a+b,0) / times.length);
+    document.getElementById("lastTime").innerText = `Letzte Zeit: ${formatTime(stopwatchSeconds)}`;
+    document.getElementById("averageTime").innerText = `Durchschnitt: ${formatTime(avg)}`;
+}
+
+function resetStopwatch() {
+    clearInterval(stopwatchInterval);
+    stopwatchSeconds = 0;
+    updateStopwatchDisplay();
+}
+
+function updateStopwatchDisplay() {
+    document.getElementById("stopwatchTime").innerText = formatTime(stopwatchSeconds);
+}
+
+function formatTime(s) {
+    let mins = Math.floor(s / 60);
+    let secs = s % 60;
+    return String(mins).padStart(2,'0') + ":" + String(secs).padStart(2,'0');
+}
+
+setInterval(renderMachines, 1000);
+detectShift();
+renderMachines();
 </script>
+
 </body>
 </html>
