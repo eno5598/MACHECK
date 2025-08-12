@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Maschinen Check V2</title>
+<title>Maschinen Check V1+</title>
 <style>
     body { font-family: Arial, sans-serif; margin: 0; padding: 0; background: #f4f4f4; }
     header { background: #333; color: white; padding: 10px; text-align: center; }
@@ -13,9 +13,8 @@
     .orange { background: #f39c12; color: white; }
     .red { background: #e74c3c; color: white; }
     .green { background: #2ecc71; color: white; }
-    .machine { padding: 10px; margin-bottom: 10px; background: white; border-radius: 5px; display: flex; justify-content: space-between; align-items: center; }
-    .pause-info { margin-top: 10px; padding: 10px; background: #ddd; border-radius: 5px; }
-    .stopwatch { margin-top: 15px; padding: 10px; background: #ccc; border-radius: 5px; }
+    .machine { padding: 10px; margin-bottom: 10px; background: white; border-radius: 5px; }
+    .pause-info, .stopwatch { margin-top: 15px; padding: 10px; background: #ddd; border-radius: 5px; }
 </style>
 </head>
 <body>
@@ -45,37 +44,58 @@
 let machines = JSON.parse(localStorage.getItem("machines")) || [];
 let stopwatchInterval, stopwatchSeconds = 0, times = [];
 
+// Schicht-Erkennung
 function detectShift() {
     let now = new Date();
     let h = now.getHours(), m = now.getMinutes();
-    let current = h * 60 + m;
+    let total = h * 60 + m;
     let shift = "";
-    if (current >= 330 && current < 810) shift = "Frühschicht (05:30 - 13:30)";
-    else if (current >= 810 && current < 1290) shift = "Spätschicht (13:30 - 21:30)";
+    if (total >= 330 && total < 810) shift = "Frühschicht (05:30 - 13:30)";
+    else if (total >= 810 && total < 1290) shift = "Spätschicht (13:30 - 21:30)";
     else shift = "Nachtschicht (21:30 - 05:30)";
     document.getElementById("shiftName").innerText = "Schicht: " + shift;
 }
 
+// Maschine hinzufügen
 function addMachine() {
     let name = prompt("Maschinen-Nummer / Name:");
+    if (!name) return;
+
+    let fachung = confirm("Fachung? (10 Min)");
+    let folie = confirm("Folie? (3 Min)");
+    let einbau = confirm("Einbau? (5 Min)");
+    let ausbau = confirm("Ausbau? (4 Min)");
+    let putzen = confirm("Maschinen putzen? (15 Min)");
+
+    let workMinutes = 0;
+    if (fachung) workMinutes += 10;
+    if (folie) workMinutes += 3;
+    if (einbau) workMinutes += 5;
+    if (ausbau) workMinutes += 4;
+    if (putzen) workMinutes += 15;
+
     let minutes = parseInt(prompt("Zeit bis fällig (in Minuten):"));
-    if (!name || isNaN(minutes)) return;
-    let due = Date.now() + minutes * 60000;
-    machines.push({ name, due, done: false });
+    if (isNaN(minutes)) return;
+
+    let due = Date.now() + (minutes * 60000);
+    machines.push({ name, due, workMinutes, done: false });
     saveMachines();
     renderMachines();
 }
 
+// Erledigt umschalten
 function toggleDone(index) {
     machines[index].done = !machines[index].done;
     saveMachines();
     renderMachines();
 }
 
+// Speichern
 function saveMachines() {
     localStorage.setItem("machines", JSON.stringify(machines));
 }
 
+// Rendern
 function renderMachines() {
     let container = document.getElementById("machines");
     container.innerHTML = "";
@@ -92,7 +112,9 @@ function renderMachines() {
         let div = document.createElement("div");
         div.className = "machine " + color;
         div.innerHTML = `
-            <strong>${m.name}</strong> - ${String(mins).padStart(2,'0')}:${String(secs).padStart(2,'0')}
+            <strong>${m.name}</strong> 
+            <br>Arbeit: ${m.workMinutes} Min
+            <br>Zeit: ${String(mins).padStart(2,'0')}:${String(secs).padStart(2,'0')}
             <button onclick="toggleDone(${i})">${m.done ? 'Rückgängig' : 'Erledigt'}</button>
         `;
         container.appendChild(div);
@@ -101,21 +123,21 @@ function renderMachines() {
     updatePauseInfo();
 }
 
+// Pause-Info berechnen
 function updatePauseInfo() {
     let now = Date.now();
     let nextDue = Math.min(...machines.filter(m => !m.done).map(m => m.due));
     let freeMins = isFinite(nextDue) ? Math.floor((nextDue - now) / 60000) : 0;
     let pauseMsg = "";
 
+    // Sichtprüfung alle 2 Std (10 Min)
     let shiftStart = new Date();
-    shiftStart.setMinutes(0); shiftStart.setSeconds(0);
     let h = new Date().getHours();
     if (h >= 5 && h < 13) shiftStart.setHours(5,30);
     else if (h >= 13 && h < 21) shiftStart.setHours(13,30);
-    else if (h >= 21 || h < 5) {
-        if (h < 5) shiftStart.setDate(shiftStart.getDate() - 1);
-        shiftStart.setHours(21,30);
-    }
+    else shiftStart.setHours(21,30);
+    shiftStart.setMinutes(30); shiftStart.setSeconds(0);
+
     let elapsedMins = Math.floor((now - shiftStart.getTime()) / 60000);
     let minsToNextCheck = 120 - (elapsedMins % 120);
     if (minsToNextCheck === 120) minsToNextCheck = 0;
@@ -129,6 +151,7 @@ function updatePauseInfo() {
     document.getElementById("pauseInfo").innerText = pauseMsg;
 }
 
+// Stoppuhr
 function startStopwatch() {
     clearInterval(stopwatchInterval);
     stopwatchInterval = setInterval(() => {
