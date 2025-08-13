@@ -8,105 +8,96 @@
   :root{
     --bg:#0f1115; --panel:#151923; --text:#ffffff; --muted:#9aa1b3;
     --green:#15803d; --blue:#1e3a8a; --orange:#f97316; --red:#b91c1c;
-    --btn:#19c37d; --btn2:#4b5563; --border:#232838;
-    --chip:#0e1420;
+    --btn:#19c37d; --btn2:#4b5563; --border:#232838; --chip:#0e1420;
   }
-  /* Light-Mode */
   body.light{
     --bg:#f6f8fb; --panel:#ffffff; --text:#0f172a; --muted:#475569;
     --green:#16a34a; --blue:#1d4ed8; --orange:#f97316; --red:#dc2626;
-    --btn:#16a34a; --btn2:#64748b; --border:#e5e7eb;
-    --chip:#f1f5f9;
+    --btn:#16a34a; --btn2:#64748b; --border:#e5e7eb; --chip:#f1f5f9;
   }
-
   *{box-sizing:border-box}
   body{margin:0;background:var(--bg);color:var(--text);font:14px/1.45 -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Arial}
   header{background:#151923;border-bottom:1px solid var(--border);padding:12px;position:sticky;top:0;z-index:10}
   body.light header{background:var(--panel)}
-  h1{margin:0 0 4px 0;font-size:18px}
+  h1{margin:0 0 6px 0;font-size:18px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  .toolbar{margin-left:auto;display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+  .label{font-size:12px;color:var(--muted)}
   .total,.shiftInfo{color:var(--muted);font-size:13px}
   .extraLine{color:var(--muted);font-size:12px;margin-top:4px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
   .chip{background:var(--chip);border:1px solid var(--border);padding:4px 8px;border-radius:999px}
-  .right{float:right}
-
-  main{padding:12px;max-width:820px;margin:0 auto}
+  main{padding:12px;max-width:920px;margin:0 auto}
   .btn{width:100%;padding:10px;border:none;border-radius:8px;background:var(--btn);color:white;font-weight:600;cursor:pointer}
+  .btn2{background:var(--btn2);color:white;border:none;border-radius:6px;padding:6px 10px;cursor:pointer;font-size:12px}
+  .btnYellow{background:#f59e0b;color:#111;border:none;border-radius:6px;padding:6px 10px;cursor:pointer;font-size:12px}
+  .danger{background:#7f1d1d}
   .list{margin-top:10px}
   .task{padding:12px;border-radius:10px;margin-bottom:10px;border:1px solid var(--border);position:relative;overflow:hidden}
   .task.red{background:var(--red)}
   .task.orange{background:var(--orange)}
   .task.blue{background:var(--blue)}
   .task.green{background:var(--green)}
-
-  /* Fortschrittsbalken */
-  .progress{height:6px;border-radius:999px;background:rgba(0,0,0,.25);overflow:hidden;margin-top:8px}
-  .progress > span{display:block;height:100%;background:rgba(255,255,255,.8);width:0%}
-
-  /* Blinken bei Überfälligkeit */
-  @keyframes softBlink {
-    0% { filter:brightness(1); }
-    50%{ filter:brightness(1.15); }
-    100%{ filter:brightness(1); }
-  }
-  .task.red.blink { animation: softBlink 1.2s ease-in-out infinite; }
-
-  /* Grund gesetzt -> gelb + lila Umrandung */
-  .task.paused{
-    background:#f59e0b !important;
-    border-color:#8b5cf6 !important;
-    box-shadow:0 0 0 2px #8b5cf6 inset;
-  }
-
+  .task.paused{background:#f59e0b !important;border-color:#8b5cf6 !important;box-shadow:0 0 0 2px #8b5cf6 inset}
+  @keyframes softBlink{0%{filter:brightness(1)}50%{filter:brightness(1.15)}100%{filter:brightness(1)}}
+  .task.red.blink{animation:softBlink 1.2s ease-in-out infinite}
   .row{display:flex;justify-content:space-between;gap:8px;align-items:center;flex-wrap:wrap}
-  .note{color:#eef;opacity:.9}
-  body.light .note{color:#0f172a;opacity:.7}
+  .note{color:#eef;opacity:.9} body.light .note{color:#0f172a;opacity:.7}
   .pill{padding:4px 10px;border-radius:999px;background:rgba(0,0,0,.25);font-variant-numeric:tabular-nums;font-weight:700}
   body.light .pill{background:#e2e8f0}
-  .small{font-size:12px;color:#e8e8e8;opacity:.85}
-  body.light .small{color:#334155;opacity:.9}
+  .small{font-size:12px;color:#e8e8e8;opacity:.85} body.light .small{color:#334155;opacity:.9}
   .tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
   .tag{background:rgba(0,0,0,.25);padding:2px 8px;border-radius:999px;font-size:12px}
   body.light .tag{background:#e2e8f0}
   .actions{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
-  .btn2{background:var(--btn2);color:white;border:none;border-radius:6px;padding:6px 10px;cursor:pointer;font-size:12px}
-  .btnYellow{background:#f59e0b;color:#111;border:none;border-radius:6px;padding:6px 10px;cursor:pointer;font-size:12px}
-  .danger{background:#7f1d1d}
-  input:not([type="checkbox"]), select{
-    width:100%;padding:8px;border-radius:8px;border:1px solid var(--border);
-    background:#0e1420;color:#e9ecf1
-  }
-  body.light input:not([type="checkbox"]), body.light select{
-    background:#ffffff;color:#0f172a;border-color:#cbd5e1
-  }
-  dialog{border:none;border-radius:12px;padding:0;max-width:560px;width:92%}
+  .progress{height:6px;border-radius:999px;background:rgba(0,0,0,.25);overflow:hidden;margin-top:8px}
+  .progress > span{display:block;height:100%;background:rgba(255,255,255,.8);width:0%}
+  input:not([type="checkbox"]), select{width:100%;padding:8px;border-radius:8px;border:1px solid var(--border);background:#0e1420;color:#e9ecf1}
+  body.light input:not([type="checkbox"]), body.light select{background:#fff;color:#0f172a;border-color:#cbd5e1}
+  dialog{border:none;border-radius:12px;padding:0;max-width:620px;width:92%}
   .dlg{padding:14px;background:#151923;color:#fff;border:1px solid var(--border);border-radius:12px}
   body.light .dlg{background:#ffffff;color:#0f172a}
   .dlg h3{margin:0 0 8px 0}
   .grid{display:grid;grid-template-columns:1fr;gap:10px}
   @media(min-width:620px){ .grid{grid-template-columns:1fr 1fr} }
   .checks{display:flex;gap:8px;flex-wrap:wrap}
-  .checks label{
-    display:flex;align-items:center;gap:8px;
-    font-size:12px;padding:6px 10px;border-radius:999px;
-    border:1px solid var(--border); background:#0e1420; color:#e9ecf1
-  }
-  body.light .checks label{ background:#f8fafc;color:#0f172a;border-color:#cbd5e1; }
-  .checks input[type="checkbox"]{ width:auto;height:auto;margin:0;transform:scale(1.2);accent-color:#19c37d; }
-  .calcRow{display:flex;justify-content:space-between;align-items:center;color:#9aa1b3;font-size:12px;margin-top:4px}
-
-  /* Aufgaben verwalten – Spalten */
+  .checks label{display:flex;align-items:center;gap:8px;font-size:12px;padding:6px 10px;border-radius:999px;border:1px solid var(--border); background:#0e1420; color:#e9ecf1}
+  body.light .checks label{background:#f8fafc;color:#0f172a;border-color:#cbd5e1}
+  .calcRow{display:flex;justify-content:space-between;align-items:center;color:var(--muted);font-size:12px;margin-top:4px}
   .manageHead{display:grid;grid-template-columns:1fr 120px;gap:10px;margin-bottom:6px;color:var(--muted);font-size:12px}
   .manageRow{display:grid;grid-template-columns:1fr 120px;gap:10px;margin-bottom:6px}
+  .grpHead{display:grid;grid-template-columns:1fr 110px 90px;gap:10px;margin-bottom:6px;color:var(--muted);font-size:12px}
+  .grpRow{display:grid;grid-template-columns:1fr 110px 90px;gap:10px;margin-bottom:6px}
+  .hi{outline:2px solid #8b5cf6;border-radius:8px}
+  .badge{margin-left:6px;font-size:11px;padding:2px 6px;border-radius:999px;background:rgba(0,0,0,.25)}
+  body.light .badge{background:#e2e8f0}
+
+  /* Blinkender roter Text für fällige Sichtprüfung */
+  .blinkText{
+    color:#ff5a5a !important;
+    animation: blinkText 1s ease-in-out infinite;
+    border-color:#ff5a5a !important;
+  }
+  @keyframes blinkText{
+    0%{opacity:1}
+    50%{opacity:0.35}
+    100%{opacity:1}
+  }
 </style>
 </head>
 <body>
 <header>
-  <h1>Maschinen-Check
-    <button class="btn2 right" id="themeBtn" style="float:right;margin-left:8px">🌓 Modus</button>
+  <h1>
+    Maschinen-Check
+    <span class="toolbar">
+      <button class="btn2" id="themeBtn">🌓 Modus</button>
+      <span class="label">Gruppe</span>
+      <select id="groupSelect" class="btn2" style="background:transparent;border:1px solid var(--border)">
+        <option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option>
+      </select>
+      <button class="btn2" id="manageGroupsBtn">Gruppen verwalten</button>
+    </span>
   </h1>
   <div class="shiftInfo" id="shiftInfo"></div>
   <div class="total" id="totalTime">Gesamtzeit: 0 Min (offen)</div>
-
   <div class="extraLine"><span id="nextBreak" class="chip">Pause bis zur nächsten Arbeit: —</span></div>
   <div class="extraLine">
     <span id="inspectionInfo" class="chip">Sichtprüfung in: —</span>
@@ -122,7 +113,6 @@
   <div class="actions" style="margin-top:8px">
     <button class="btn2" id="manageTasksBtn">⚙️ Aufgaben verwalten</button>
   </div>
-
   <div class="list" id="taskList"></div>
   <button class="btn" id="pdfBtn">📄 PDF erstellen</button>
 </main>
@@ -133,11 +123,10 @@
     <h3 id="dlgTitle">Maschine hinzufügen</h3>
     <div class="grid">
       <div>
-        <label class="small">Maschinen-Nr.</label>
-        <input id="f_nr" type="text" placeholder="z. B. 7">
+        <label class="small">Maschinen-Nr. (aus Gruppe)</label>
+        <select id="f_nr_select"></select>
       </div>
       <div>
-        <!-- Max 08:00 -->
         <label class="small">Restzeit (Std:Min) – max 08:00</label>
         <input id="f_timer" type="time" step="60" value="00:30">
       </div>
@@ -150,10 +139,7 @@
           <label><input type="checkbox" class="f_tag" value="Ausbau" data-min="4"> Ausbau (4)</label>
           <label><input type="checkbox" class="f_tag" value="Maschinen putzen" data-min="15"> Maschinen putzen (15)</label>
         </div>
-        <div class="calcRow">
-          <span>Berechnete Arbeitszeit:</span>
-          <strong id="calcDur">0 Min</strong>
-        </div>
+        <div class="calcRow"><span>Berechnete Arbeitszeit:</span><strong id="calcDur">0 Min</strong></div>
       </div>
       <div>
         <label class="small">Zusatz-Minuten</label>
@@ -183,16 +169,9 @@
 <dialog id="manageDlg">
   <div class="dlg">
     <h3>Aufgaben verwalten</h3>
-    <div class="small" style="margin-bottom:6px">
-      Aufgabe links eintragen, rechts Minuten <strong>1–60</strong> auswählen.
-    </div>
-
-    <div class="manageHead">
-      <div>Aufgabe</div>
-      <div>Minuten</div>
-    </div>
+    <div class="small" style="margin-bottom:6px">Aufgabe links, Minuten (1–60) rechts.</div>
+    <div class="manageHead"><div>Aufgabe</div><div>Minuten</div></div>
     <div id="taskRows"></div>
-
     <div class="actions" style="margin-top:8px">
       <button class="btn2" id="addTaskTypeBtn">+ Aufgabe</button>
       <button class="btn2" id="resetTaskTypesBtn">↺ Standard</button>
@@ -202,7 +181,7 @@
   </div>
 </dialog>
 
-<!-- Dialog: Grund setzen (Schnellfunktion mit Buttons) -->
+<!-- Dialog Grund setzen (Buttons) -->
 <dialog id="reasonDlg">
   <div class="dlg">
     <h3>Grund setzen</h3>
@@ -215,56 +194,64 @@
   </div>
 </dialog>
 
+<!-- Dialog Gruppen verwalten (Maschinen-Nr. <-> Gruppe) -->
+<dialog id="groupDlg">
+  <div class="dlg">
+    <h3>Gruppen verwalten (Maschine ↔ Gruppe)</h3>
+    <div class="small" style="margin-bottom:6px">Feste Zuordnung. Hier legst du alle Nummern an / korrigierst Tippfehler.</div>
+    <div class="grpHead"><div>Maschinen-Nr.</div><div>Gruppe (1–4)</div><div>Aktion</div></div>
+    <div id="groupRows"></div>
+    <div class="actions" style="margin-top:8px">
+      <button class="btn2" id="addGroupMapBtn">+ Zuordnung</button>
+      <button class="btn2" id="closeGroupBtn">Schließen</button>
+      <button class="btn2" id="saveGroupBtn">Speichern</button>
+    </div>
+  </div>
+</dialog>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script>
-/* === Konstante Einstellungen === */
+/* === Konstanten & Keys === */
 const ORANGE_THRESHOLD_MIN = 45;
-const MAX_TIMER_MIN = 8*60;                     // Max 8h
+const MAX_TIMER_MIN = 8*60;
 const INSPECTION_INTERVAL_MIN = 120;
 const KEY = "maschinenCheck_v1plus";
 const KEY_TASKTYPES = "maschinenCheck_taskTypes_v1";
 const KEY_INSPECTION = "maschinenCheck_inspectionLastAt_v1";
 const KEY_THEME = "maschinenCheck_theme_v1";
+const KEY_GROUPMAP = "maschinenCheck_machineGroups_v1";
+const KEY_CURRENT_GROUP = "maschinenCheck_currentGroup_v1";
 
-/* === Daten === */
+/* === State === */
 let tasks = JSON.parse(localStorage.getItem(KEY) || "[]");
+let machineGroups = loadGroupMap(); // { "74":2, ... }
 
-/* === Utils === */
+/* === Helpers === */
 const $ = s => document.querySelector(s);
 const $$ = (s,root=document) => Array.from(root.querySelectorAll(s));
 function save(){ localStorage.setItem(KEY, JSON.stringify(tasks)); }
-function fmtCountdown(ms){
-  if (ms <= 0) return "00:00";
-  const totalMin = Math.floor(ms/60000);
-  const h = Math.floor(totalMin/60);
-  const m = totalMin%60;
-  return `${String(h).padStart(2,"0")}:${String(m).padStart(2,"0")}`;
-}
-function fmtTime(ts){
-  const d = new Date(ts);
-  const hh = String(d.getHours()).padStart(2,"0");
-  const mm = String(d.getMinutes()).padStart(2,"0");
-  return `${hh}:${mm}`;
-}
+function saveGroupMap(){ localStorage.setItem(KEY_GROUPMAP, JSON.stringify(machineGroups)); }
+function loadGroupMap(){ try{ return JSON.parse(localStorage.getItem(KEY_GROUPMAP) || "{}"); }catch(e){ return {}; } }
+function fmtCountdown(ms){ if(ms<=0) return "00:00"; const t=Math.floor(ms/60000),h=Math.floor(t/60),m=t%60; return `${String(h).padStart(2,"0")}:${String(m).padStart(2,"0")}`; }
+function fmtTime(ts){ const d=new Date(ts),hh=String(d.getHours()).padStart(2,"0"),mm=String(d.getMinutes()).padStart(2,"0"); return `${hh}:${mm}`; }
 function clamp(v,min,max){ return Math.max(min, Math.min(max, v)); }
-function timeToMinutes(val){
-  if(!val || !val.includes(":")) return 0;
-  const [h,m] = val.split(":").map(n=>parseInt(n,10));
-  return clamp(h*60+m, 0, MAX_TIMER_MIN);
-}
+function timeToMinutes(val){ if(!val||!val.includes(":")) return 0; const [h,m]=val.split(":").map(n=>parseInt(n,10)); return clamp(h*60+m,0,MAX_TIMER_MIN); }
 function statusFor(t){
   if (t.done) return "green";
+  if (t.reason === "Elektriker" || t.reason === "Schlosser") return "paused"; // Pause hat Vorrang
   const left = t.due - Date.now();
-  if (t.reason === "Elektriker" || t.reason === "Schlosser") return "paused"; // Sonderstatus
   if (left <= 0) return "red";
   if (left <= ORANGE_THRESHOLD_MIN*60000) return "orange";
   return "blue";
 }
 function sortTasks(a,b){
   const now = Date.now();
-  const aOver = (!a.done && a.due <= now), bOver = (!b.done && b.due <= now);
+  const aOver = (!a.done && a.due <= now && !(a.reason));
+  const bOver = (!b.done && b.due <= now && !(b.reason));
   if (aOver && !bOver) return -1;
   if (!aOver && bOver) return 1;
+  if (!a.done && a.reason && (!b.done && !b.reason)) return -1;
+  if ((!a.done && !a.reason) && (!b.done && b.reason)) return 1;
   if (!a.done && b.done) return -1;
   if (a.done && !b.done) return 1;
   return Math.max(0,a.due-now) - Math.max(0,b.due-now);
@@ -280,6 +267,15 @@ $("#themeBtn").addEventListener("click", ()=>{
   localStorage.setItem(KEY_THEME, document.body.classList.contains("light") ? "light" : "dark");
 });
 
+/* === Current Group Selector === */
+(function initGroupSelect(){
+  const cur = parseInt(localStorage.getItem(KEY_CURRENT_GROUP)||"1",10)||1;
+  $("#groupSelect").value = String(cur);
+})();
+$("#groupSelect").addEventListener("change", ()=>{
+  localStorage.setItem(KEY_CURRENT_GROUP, $("#groupSelect").value);
+});
+
 /* === Aufgaben-Typen === */
 const DEFAULT_TASK_TYPES = [
   {label:"Fachung", minutes:10},
@@ -288,15 +284,11 @@ const DEFAULT_TASK_TYPES = [
   {label:"Ausbau", minutes:4},
   {label:"Maschinen putzen", minutes:15},
 ];
-function loadTaskTypes(){
-  try{ return JSON.parse(localStorage.getItem(KEY_TASKTYPES)) || DEFAULT_TASK_TYPES.slice(); }
-  catch(e){ return DEFAULT_TASK_TYPES.slice(); }
-}
+function loadTaskTypes(){ try{ return JSON.parse(localStorage.getItem(KEY_TASKTYPES)) || DEFAULT_TASK_TYPES.slice(); } catch(e){ return DEFAULT_TASK_TYPES.slice(); } }
 function saveTaskTypes(list){ localStorage.setItem(KEY_TASKTYPES, JSON.stringify(list)); }
 function rebuildChecksFromTypes(){
   const types = loadTaskTypes();
-  const wrap = $("#checks");
-  wrap.innerHTML = ""; // Element bleibt, nur Inhalt neu
+  const wrap = $("#checks"); wrap.innerHTML = "";
   types.forEach(t=>{
     const label = document.createElement("label");
     label.innerHTML = `<input type="checkbox" class="f_tag" value="${t.label}" data-min="${t.minutes}"> ${t.label} (${t.minutes})`;
@@ -309,32 +301,83 @@ rebuildChecksFromTypes();
 function getLastInspection(){ return parseInt(localStorage.getItem(KEY_INSPECTION)||"0",10) || 0; }
 function setLastInspection(ts){ localStorage.setItem(KEY_INSPECTION, String(ts)); }
 if(!getLastInspection()){ setLastInspection(Date.now()); }
-$("#inspectionBtn").addEventListener("click", ()=>{
-  setLastInspection(Date.now());
-  render();
-});
+$("#inspectionBtn").addEventListener("click", ()=>{ setLastInspection(Date.now()); render(); });
 
-/* === Reason Dialog (Schnellfunktion) === */
+/* === Reason Dialog (Buttons) === */
 let reasonTargetId = null;
 const reasonDlg = $("#reasonDlg");
 $("#reasonEle").addEventListener("click", ()=> applyReasonToTarget("Elektriker"));
 $("#reasonSch").addEventListener("click", ()=> applyReasonToTarget("Schlosser"));
 $("#reasonClear").addEventListener("click", ()=> applyReasonToTarget(""));
 $("#reasonCancel").addEventListener("click", ()=> reasonDlg.close());
-
-function openReasonDialog(id){
-  reasonTargetId = id;
-  reasonDlg.showModal();
-}
+function openReasonDialog(id){ reasonTargetId = id; reasonDlg.showModal(); }
 function applyReasonToTarget(val){
   if(reasonTargetId==null){ reasonDlg.close(); return; }
   const t = tasks.find(x=>x.id===reasonTargetId);
-  if(t){
-    t.reason = (val||"").trim();
-    save(); render();
+  if(t){ t.reason = (val||"").trim(); save(); render(); }
+  reasonTargetId = null; reasonDlg.close();
+}
+
+/* === Gruppen Manager (Maschinen-Nummer ↔ Gruppe) === */
+const groupDlg = $("#groupDlg");
+$("#manageGroupsBtn").addEventListener("click", ()=>{ buildGroupRows(); groupDlg.showModal(); });
+$("#closeGroupBtn").addEventListener("click", ()=> groupDlg.close());
+$("#addGroupMapBtn").addEventListener("click", ()=>{
+  const box = $("#groupRows");
+  const row = document.createElement("div");
+  row.className = "grpRow";
+  row.innerHTML = `
+    <div><input type="text" placeholder="z. B. 74" class="gm_nr"></div>
+    <div>
+      <select class="gm_group">
+        <option>1</option><option>2</option><option>3</option><option>4</option>
+      </select>
+    </div>
+    <div><button class="btn2 gm_del">Löschen</button></div>
+  `;
+  box.appendChild(row);
+  row.querySelector(".gm_del").addEventListener("click", ()=>{ row.remove(); });
+});
+$("#saveGroupBtn").addEventListener("click", ()=>{
+  const nrs = $$(".gm_nr", groupDlg).map(i=>i.value.trim()).filter(x=>x!=="");
+  const gps = $$(".gm_group", groupDlg).map(i=>parseInt(i.value,10));
+  const map = {};
+  for(let i=0;i<nrs.length;i++){
+    const k = nrs[i];
+    if(!/^\d+$/.test(k)){ alert("Nur positive Nummern erlaubt."); return; }
+    const g = gps[i]; if(!(g>=1 && g<=4)){ alert("Gruppe muss 1–4 sein."); return; }
+    map[k] = g;
   }
-  reasonTargetId = null;
-  reasonDlg.close();
+  machineGroups = map;
+  saveGroupMap();
+  groupDlg.close();
+  render();
+});
+function buildGroupRows(highlightNr=null){
+  const box = $("#groupRows"); box.innerHTML = "";
+  const entries = Object.keys(machineGroups).sort((a,b)=> parseInt(a,10)-parseInt(b,10));
+  if(entries.length===0){ $("#addGroupMapBtn").click(); return; }
+  entries.forEach(k=>{
+    const g = machineGroups[k];
+    const row = document.createElement("div");
+    row.className = "grpRow" + (highlightNr && highlightNr===k ? " hi" : "");
+    row.innerHTML = `
+      <div><input type="text" value="${k}" class="gm_nr"></div>
+      <div>
+        <select class="gm_group">
+          <option ${g===1?"selected":""}>1</option>
+          <option ${g===2?"selected":""}>2</option>
+          <option ${g===3?"selected":""}>3</option>
+          <option ${g===4?"selected":""}>4</option>
+        </select>
+      </div>
+      <div><button class="btn2 gm_del">Löschen</button></div>
+    `;
+    box.appendChild(row);
+    row.querySelector(".gm_del").addEventListener("click", ()=>{
+      row.remove();
+    });
+  });
 }
 
 /* === Render === */
@@ -344,49 +387,45 @@ function render(){
   $("#totalTime").textContent = `Gesamtzeit: ${total} Min (offen)`;
   $("#shiftInfo").textContent = getShiftInfo();
 
-  // Pause bis zur nächsten Arbeit
   const now = Date.now();
   const open = list.filter(t=>!t.done);
   const nextMs = open.map(t=>t.due - now).filter(ms=>ms>0).sort((a,b)=>a-b)[0];
   let pauseTxt = "—";
-  if(open.length === 0) pauseTxt = "— (keine anstehende Arbeit)";
-  else if(nextMs === undefined){
-    const anyOver = open.some(t=>t.due <= now);
-    pauseTxt = anyOver ? "00:00 (sofort)" : "—";
-  }else{
-    pauseTxt = fmtCountdown(nextMs);
-  }
+  if(open.length===0) pauseTxt = "— (keine anstehende Arbeit)";
+  else if(nextMs===undefined){ pauseTxt = open.some(t=>t.due<=now && !t.reason) ? "00:00 (sofort)" : "—"; }
+  else pauseTxt = fmtCountdown(nextMs);
   $("#nextBreak").textContent = `Pause bis zur nächsten Arbeit: ${pauseTxt}`;
 
-  // Sichtprüfung
   const last = getLastInspection();
   const dueIn = INSPECTION_INTERVAL_MIN*60000 - (now - last);
-  $("#inspectionInfo").textContent = dueIn>0
-    ? `Sichtprüfung in: ${fmtCountdown(dueIn)}`
-    : `Sichtprüfung fällig!`;
+  const insp = $("#inspectionInfo");
+  if(dueIn>0){
+    insp.textContent = `Sichtprüfung in: ${fmtCountdown(dueIn)}`;
+    insp.classList.remove("blinkText");
+  }else{
+    insp.textContent = `Sichtprüfung fällig!`;
+    insp.classList.add("blinkText"); // roter, blinkender Text
+  }
 
-  // Zähler (Elektriker/Schlosser separat)
-  const overCount = open.filter(t=>t.due <= now && !t.reason).length; // Pausen mit Grund nicht als überfällig
+  const overCount = open.filter(t=>t.due <= now && !t.reason).length;
   const soonCount = open.filter(t=>t.due > now && (t.due - now) <= ORANGE_THRESHOLD_MIN*60000 && !t.reason).length;
   const openCount = open.length;
-  const eleCount = open.filter(t=>t.reason === "Elektriker").length;
-  const schCount = open.filter(t=>t.reason === "Schlosser").length;
+  const eleCount = open.filter(t=>t.reason==="Elektriker").length;
+  const schCount = open.filter(t=>t.reason==="Schlosser").length;
   $("#statusCounts").textContent = `Überfällig: ${overCount} · Bald fällig: ${soonCount} · Offen: ${openCount} · Elektriker: ${eleCount} · Schlosser: ${schCount}`;
 
-  // Karten
-  const box = $("#taskList");
-  box.innerHTML = "";
+  const box = $("#taskList"); box.innerHTML = "";
   list.forEach(t=>{
     const msLeft = t.due - now;
     const status = statusFor(t);
     const tags = (t.tags||[]).map(x=>`<span class="tag">${x}</span>`).join("");
     const reasonTag = t.reason ? `<span class="tag">Grund: ${t.reason}</span>` : "";
+    const grpBadge = t.group ? `<span class="badge">G${t.group}</span>` : "";
     const div = document.createElement("div");
     div.className = `task ${status}`;
     if(status === "red") div.classList.add("blink");
-    if(status === "paused") div.classList.add("paused");
+    if(status === "paused"){ div.classList.remove("blink"); div.classList.add("paused"); }
 
-    // Fortschritt
     const totalMinInit = parseInt(t.totalMin || 0, 10);
     let progressPct = 0;
     if(totalMinInit > 0){
@@ -395,10 +434,9 @@ function render(){
     }
 
     const dueTimeTxt = fmtTime(t.due);
-
     div.innerHTML = `
       <div class="row">
-        <strong>Maschine ${t.nr}</strong>
+        <strong>Maschine ${t.nr} ${grpBadge}</strong>
         <span class="pill">${fmtCountdown(Math.max(0,msLeft))} · fällig um ${dueTimeTxt}</span>
       </div>
       <div class="tags">${tags}${reasonTag}</div>
@@ -406,13 +444,10 @@ function render(){
         <span class="note">${t.note||""}</span>
         <span class="small">Arbeitszeit: ${t.duration||0} Min</span>
       </div>
-
       <div class="progress"><span style="width:${progressPct}%;"></span></div>
-
       <div class="actions">
         <button class="btn2" onclick="adjTime(${t.id}, -5)">−5 Min</button>
         <button class="btn2" onclick="adjTime(${t.id}, +5)">+5 Min</button>
-
         <button class="btn2" onclick="toggleDone(${t.id})">${t.done ? "Wieder offen" : "Erledigt"}</button>
         <button class="btn2" onclick="editTask(${t.id})">Bearbeiten</button>
         <button class="btn2" onclick="openReasonDialog(${t.id})">Grund setzen</button>
@@ -425,120 +460,86 @@ function render(){
 
 /* === Schichtinfo === */
 function getShiftInfo(){
-  const now = new Date();
-  const h = now.getHours(), m = now.getMinutes();
-  const min = h*60 + m;
+  const now = new Date(), h=now.getHours(), m=now.getMinutes(), min=h*60+m;
   if(min >= 330 && min < 810) return "Frühschicht 05:30-13:30";
   if(min >= 810 && min < 1290) return "Spätschicht 13:30-21:30";
   return "Nachtschicht 21:30-05:30";
 }
 
-/* === CRUD & Dialoge === */
+/* === CRUD === */
 function addTask(){ openDialog(); }
-function editTask(id){
-  const t = tasks.find(x=>x.id===id); if(!t) return;
-  openDialog(t);
-}
-function deleteTask(id){
-  if(!confirm("Eintrag löschen?")) return;
-  tasks = tasks.filter(t=>t.id!==id); save(); render();
-}
-function toggleDone(id){
-  const t = tasks.find(x=>x.id===id); if(!t) return;
-  t.done = !t.done; save(); render();
+function editTask(id){ const t = tasks.find(x=>x.id===id); if(!t) return; openDialog(t); }
+function deleteTask(id){ if(!confirm("Eintrag löschen?")) return; tasks = tasks.filter(t=>t.id!==id); save(); render(); }
+function toggleDone(id){ const t = tasks.find(x=>x.id===id); if(!t) return; t.done = !t.done; save(); render(); }
+function adjTime(id, deltaMin){ const t=tasks.find(x=>x.id===id); if(!t||t.done) return; t.due += deltaMin*60000; t.totalMin = clamp((t.totalMin||0)+deltaMin,0,MAX_TIMER_MIN); save(); render(); }
+
+/* === Aufgaben verwalten === */
+const manageDlg = $("#manageDlg");
+$("#manageTasksBtn").addEventListener("click", ()=>{ buildManageRows(); manageDlg.showModal(); });
+$("#closeManageBtn").addEventListener("click", ()=> manageDlg.close());
+$("#resetTaskTypesBtn").addEventListener("click", ()=>{ saveTaskTypes(DEFAULT_TASK_TYPES.slice()); buildManageRows(); rebuildChecksFromTypes(); });
+function minuteSelectHTML(value){ const v=parseInt(value,10)||5; let opts=""; for(let i=1;i<=60;i++){ opts+=`<option value="${i}" ${i===v?'selected':''}>${i}</option>`;} return `<select class="mt_minutes_select">${opts}</select>`; }
+$("#addTaskTypeBtn").addEventListener("click", ()=>{ const box=$("#taskRows"); const row=document.createElement("div"); row.className="manageRow"; row.innerHTML=`<div><input type="text" placeholder="Bezeichnung" class="mt_label"></div><div>${minuteSelectHTML(5)}</div>`; box.appendChild(row); });
+$("#saveManageBtn").addEventListener("click", ()=>{
+  const labels = $$(".mt_label", manageDlg).map(i=>i.value.trim());
+  const mins = $$(".mt_minutes_select", manageDlg).map(i=>parseInt(i.value,10)||0);
+  const merged=[]; for(let i=0;i<labels.length;i++){ if(labels[i] && mins[i]>0){ merged.push({label:labels[i], minutes:mins[i]}); } }
+  if(merged.length===0){ alert("Bitte mindestens eine gültige Aufgabe anlegen."); return; }
+  saveTaskTypes(merged); rebuildChecksFromTypes(); manageDlg.close();
+});
+function buildManageRows(){
+  const box=$("#taskRows"); box.innerHTML=""; const types=loadTaskTypes();
+  types.forEach(t=>{ const row=document.createElement("div"); row.className="manageRow"; row.innerHTML=`<div><input type="text" value="${t.label}" class="mt_label"></div><div>${minuteSelectHTML(t.minutes)}</div>`; box.appendChild(row); });
 }
 
-/* Schnellaktionen Zeit */
-function adjTime(id, deltaMin){
-  const t = tasks.find(x=>x.id===id); if(!t || t.done) return;
-  t.due += deltaMin*60000;
-  t.totalMin = clamp((t.totalMin||0) + deltaMin, 0, MAX_TIMER_MIN);
-  save(); render();
-}
-
+/* === Dialog Maschine === */
 const dlg = $("#taskDlg");
 $("#addBtn").addEventListener("click", addTask);
 $("#cancelBtn").addEventListener("click", ()=> dlg.close());
 $("#saveBtn").addEventListener("click", saveFromDialog);
-
-/* Dialog: Aufgaben verwalten – Name + Minuten-Select 1–60 */
-const manageDlg = $("#manageDlg");
-$("#manageTasksBtn").addEventListener("click", ()=>{
-  buildManageRows();
-  manageDlg.showModal();
-});
-$("#closeManageBtn").addEventListener("click", ()=> manageDlg.close());
-$("#resetTaskTypesBtn").addEventListener("click", ()=>{
-  saveTaskTypes(DEFAULT_TASK_TYPES.slice());
-  buildManageRows(); rebuildChecksFromTypes();
-});
-function minuteSelectHTML(value){
-  const v = parseInt(value,10) || 5;
-  let opts = "";
-  for(let i=1;i<=60;i++){
-    opts += `<option value="${i}" ${i===v?'selected':''}>${i}</option>`;
-  }
-  return `<select class="mt_minutes_select">${opts}</select>`;
-}
-$("#addTaskTypeBtn").addEventListener("click", ()=>{
-  const box = $("#taskRows");
-  const row = document.createElement("div");
-  row.className = "manageRow";
-  row.innerHTML = `
-    <div><input type="text" placeholder="Bezeichnung" class="mt_label"></div>
-    <div>${minuteSelectHTML(5)}</div>
-  `;
-  box.appendChild(row);
-});
-$("#saveManageBtn").addEventListener("click", ()=>{
-  const labels = $$(".mt_label", manageDlg).map(i=>i.value.trim());
-  const mins   = $$(".mt_minutes_select", manageDlg).map(i=>parseInt(i.value,10)||0);
-  const merged = [];
-  for(let i=0;i<labels.length;i++){
-    if(labels[i] && mins[i]>0){ merged.push({label:labels[i], minutes:mins[i]}); }
-  }
-  if(merged.length===0){ alert("Bitte mindestens eine gültige Aufgabe anlegen."); return; }
-  saveTaskTypes(merged);
-  rebuildChecksFromTypes();
-  manageDlg.close();
-});
-function buildManageRows(){
-  const box = $("#taskRows"); box.innerHTML = "";
-  const types = loadTaskTypes();
-  types.forEach(t=>{
-    const row = document.createElement("div");
-    row.className = "manageRow";
-    row.innerHTML = `
-      <div><input type="text" value="${t.label}" class="mt_label"></div>
-      <div>${minuteSelectHTML(t.minutes)}</div>
-    `;
-    box.appendChild(row);
-  });
-}
-
-/* Formular-Logik */
-function updateCalcDur(){
-  const base = $$(".f_tag:checked").reduce((s,el)=> s + (parseInt(el.dataset.min,10)||0), 0);
-  const extra = parseInt($("#f_extra").value,10) || 0;
-  $("#calcDur").textContent = `${base + extra} Min`;
-}
-document.addEventListener("change", e=>{
-  if(e.target.matches(".f_tag")) updateCalcDur();
-});
+function updateCalcDur(){ const base=$$(".f_tag:checked").reduce((s,el)=> s + (parseInt(el.dataset.min,10)||0), 0); const extra=parseInt($("#f_extra").value,10)||0; $("#calcDur").textContent = `${base+extra} Min`; }
+document.addEventListener("change", e=>{ if(e.target.matches(".f_tag")) updateCalcDur(); });
 $("#f_extra").addEventListener("input", updateCalcDur);
 
 let editId = null;
+
+/* Maschine-Select aus Mapping füllen (gefiltert nach aktueller Gruppe) */
+function fillMachineSelect(selectEl, preselectNr=null){
+  const curGroup = parseInt(localStorage.getItem(KEY_CURRENT_GROUP)||"1",10)||1;
+  const entries = Object.entries(machineGroups)
+    .filter(([nr,g])=> g===curGroup)
+    .sort((a,b)=> parseInt(a[0],10)-parseInt(b[0],10));
+
+  selectEl.innerHTML = "";
+  if(entries.length===0){
+    const opt = document.createElement("option");
+    opt.value=""; opt.textContent="(Keine Nummern in dieser Gruppe – bitte in „Gruppen verwalten“ anlegen)";
+    selectEl.appendChild(opt);
+    selectEl.disabled = true;
+  } else {
+    entries.forEach(([nr])=>{
+      const opt = document.createElement("option");
+      opt.value = nr; opt.textContent = nr;
+      selectEl.appendChild(opt);
+    });
+    selectEl.disabled = false;
+    if(preselectNr && machineGroups[preselectNr]===curGroup){
+      selectEl.value = String(preselectNr);
+    }
+  }
+}
+
 function openDialog(t=null){
   editId = t?.id ?? null;
   $("#dlgTitle").textContent = t ? "Maschine bearbeiten" : "Maschine hinzufügen";
-  $("#f_nr").value   = t?.nr   ?? "";
   $("#f_note").value = t?.note ?? "";
   $("#f_extra").value = 0;
-
-  // Aufgaben-Checks aus Typen neu aufbauen, dann Werte setzen
   rebuildChecksFromTypes();
-
   $$(".f_tag").forEach(cb=> cb.checked = !!(t?.tags||[]).includes(cb.value));
+
+  // Maschinen-Select laden (nur aktuelle Gruppe)
+  fillMachineSelect($("#f_nr_select"), t?.nr || null);
+
   if(t){
     const leftMin = Math.max(0, Math.floor((t.due - Date.now())/60000));
     const h = Math.floor(leftMin/60), m = leftMin%60;
@@ -551,8 +552,13 @@ function openDialog(t=null){
   updateCalcDur();
   dlg.showModal();
 }
+
 function saveFromDialog(){
-  const nr   = $("#f_nr").value.trim();
+  const nr = $("#f_nr_select").value;
+  if(!nr){
+    alert("Es sind keine Maschinen-Nummern in dieser Gruppe hinterlegt. Bitte zuerst in „Gruppen verwalten“ anlegen.");
+    return;
+  }
   const note = $("#f_note").value.trim();
   const timerMin = timeToMinutes($("#f_timer").value);
   const tagMins  = $$(".f_tag:checked").reduce((s,el)=> s + (parseInt(el.dataset.min,10)||0), 0);
@@ -561,48 +567,41 @@ function saveFromDialog(){
   const tags     = $$(".f_tag:checked").map(el=>el.value);
   const reason   = ($("#f_reason").value || "").trim();
 
-  if(!nr){ alert("Bitte Maschinen-Nr. angeben."); return; }
+  const grp = machineGroups[nr]; // feste, gespeicherte Gruppe
+  if(!(grp>=1 && grp<=4)){
+    alert("Diese Maschinen-Nummer hat keine gültige Gruppen-Zuordnung. Bitte in „Gruppen verwalten“ prüfen.");
+    return;
+  }
+
   const due = Date.now() + timerMin*60000;
 
   if(editId){
     const t = tasks.find(x=>x.id===editId);
     if(t){
-      t.nr = nr; t.note = note; t.duration = duration; t.due = due; t.tags = tags; t.reason = reason;
-      t.totalMin = timerMin; // für Fortschritt
+      t.nr = nr; t.group = grp; t.note = note; t.duration = duration; t.due = due; t.tags = tags; t.reason = reason; t.totalMin = timerMin;
     }
   } else {
-    tasks.push({ id: Date.now(), nr, note, duration, due, done:false, tags, reason, totalMin: timerMin });
+    tasks.push({ id: Date.now(), nr, group: grp, note, duration, due, done:false, tags, reason, totalMin: timerMin });
   }
   save(); render(); dlg.close();
 }
 
-/* PDF */
+/* === PDF === */
 $("#pdfBtn").addEventListener("click", ()=>{
   const { jsPDF } = window.jspdf;
-  const doc = new jsPDF();
-  doc.setFontSize(14);
+  const doc = new jsPDF(); doc.setFontSize(14);
   doc.text("Maschinen-Check Bericht", 10, 10);
   let y = 20;
   tasks.filter(t=>t.done).forEach(t=>{
-    doc.text(`Maschine ${t.nr} - ${t.tags.join(", ")} - ${t.duration} Min`, 10, y);
+    doc.text(`M${t.nr} (G${t.group||"-"}) - ${t.tags.join(", ")} - ${t.duration} Min`, 10, y);
     y += 8;
   });
   doc.save("maschinen_bericht.pdf");
 });
 
-/* Start */
+/* === Start === */
 render();
 setInterval(render, 1000);
-
-/* Schichtinfo */
-function getShiftInfo(){
-  const now = new Date();
-  const h = now.getHours(), m = now.getMinutes();
-  const min = h*60 + m;
-  if(min >= 330 && min < 810) return "Frühschicht 05:30-13:30";
-  if(min >= 810 && min < 1290) return "Spätschicht 13:30-21:30";
-  return "Nachtschicht 21:30-05:30";
-}
 </script>
 </body>
 </html>
